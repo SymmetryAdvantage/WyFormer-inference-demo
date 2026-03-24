@@ -3,3 +3,4 @@ uv.toml
 generated_structures.json
 __pycache__/
 *.pyc
+uv.lock
