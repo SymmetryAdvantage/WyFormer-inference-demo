@@ -4042,7 +4042,7 @@ wheels = [
 [[package]]
 name = "wyckoff-transformer"
 version = "1.0.0"
-source = { git = "https://github.com/SymmetryAdvantage/WyckoffTransformer.git#8fe602f3607e9554f87bbf95f0ce8f3138fa791b" }
+source = { git = "https://github.com/SymmetryAdvantage/WyckoffTransformer.git#3e7422acb61210b288f6344bf72b1dd9d3215591" }
 dependencies = [
     { name = "ase" },
     { name = "cython" },

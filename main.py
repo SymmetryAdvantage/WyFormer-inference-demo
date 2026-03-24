@@ -5,6 +5,7 @@ import time
 import json
 import torch
 from wyckoff_transformer.trainer import WyckoffTrainer
+from wyckoff_transformer.generator import WyckoffGenerator
 
 GenerationMode = Enum("GenerationMode", ["WyckoffTensors", "WyckoffJSONs", "UnrelaxedStructures"])
 
@@ -63,8 +64,46 @@ def main():
         with open(args.output_file, "wt", encoding="ascii") as f:
             json.dump(generated_wp, f)
     elif args.generate_mode == GenerationMode.WyckoffTensors:
-        pass
-        # TODO
+        generation_start_time = time.time()
+        generator = WyckoffGenerator(
+            trainer.model, trainer.cascade_order, trainer.cascade_is_target,
+            trainer.token_engineers, trainer.masks_dict, trainer.max_sequence_length)
+        if args.csx:
+            print("--- Running in Chemical System eXploration (CSX) mode ---")
+            start_tensor = trainer._sample_start_tokens_from_distribution(args.initial_n_samples)
+            if 'elements' not in trainer.tokenisers:
+                raise ValueError("Element vocabulary ('elements') not found in trainer.tokenisers.")
+            generated_tensors = generator.generate_tensors(
+                start=start_tensor,
+                required_element_set=args.required_elements,
+                allowed_element_set=args.allowed_elements,
+                elements_vocab=trainer.tokenisers['elements']
+            )
+        else:
+            print("--- Running in Default Generation mode ---")
+            start_tensor = trainer._sample_start_tokens_from_distribution(args.initial_n_samples)
+            generated_tensors = generator.generate_tensors(start_tensor, compute_validity=False)
+        generation_end_time = time.time()
+        print(f"Generation in total took {generation_end_time - generation_start_time} seconds")
+
+        cascade_order = list(trainer.cascade_order)
+        if trainer.cascade_order[-1] == "harmonic_site_symmetries":
+            del generated_tensors[-1]
+            cascade_order = cascade_order[:-1]
+        generated_tensors = torch.stack(generated_tensors, dim=-1)
+
+        if args.firm_n_samples is not None:
+            if generated_tensors.size(0) >= args.firm_n_samples:
+                start_tensor = start_tensor[:args.firm_n_samples]
+                generated_tensors = generated_tensors[:args.firm_n_samples]
+            else:
+                raise ValueError("Not enough samples to subsample.")
+        args.output_file.parent.mkdir(parents=True, exist_ok=True)
+        torch.save({
+            "start_tokens": start_tensor.detach().cpu(),
+            "generated_tensors": generated_tensors.detach().cpu(),
+            "cascade_order": cascade_order,
+        }, args.output_file)
     elif args.generate_mode == GenerationMode.UnrelaxedStructures:
         pass
         # TODO
