@@ -87,8 +87,41 @@ def generate(args):
             "cascade_order": cascade_order,
         }, args.output_file)
     elif args.generate_mode == GenerationMode.UnrelaxedStructures:
-        pass
-        # TODO
+        from pyxtal import pyxtal
+        generation_start_time = time.time()
+        if args.csx:
+            print("--- Running in Chemical System eXploration (CSX) mode ---")
+            generated_wp = trainer.generate_structures(
+                n_structures=args.initial_n_samples,
+                calibrate=False,
+                required_element_set=args.required_elements,
+                allowed_element_set=args.allowed_elements
+            )
+        else:
+            print("--- Running in Default Generation mode ---")
+            generated_wp = trainer.generate_structures(
+                args.initial_n_samples,
+                calibrate=False
+            )
+        generation_end_time = time.time()
+        print(f"Generation in total took {generation_end_time - generation_start_time} seconds")
+
+        if args.firm_n_samples is not None:
+            if len(generated_wp) >= args.firm_n_samples:
+                generated_wp = generated_wp[:args.firm_n_samples]
+            else:
+                raise ValueError("Not enough valid structures to subsample.")
+
+        args.output_file.parent.mkdir(parents=True, exist_ok=True)
+        n_written = 0
+        for wp in generated_wp:
+            xtal = pyxtal()
+            xtal.from_random(3, wp["group"], wp["species"], wp["numIons"], sites=wp["sites"])
+            if xtal.valid:
+                permission = "w" if n_written == 0 else "a+"
+                xtal.to_file(str(args.output_file), permission=permission)
+                n_written += 1
+        print(f"Wrote {n_written} structures to {args.output_file}")
     else:
         raise ValueError(f"Unsupported generation mode: {args.generate_mode}")
 

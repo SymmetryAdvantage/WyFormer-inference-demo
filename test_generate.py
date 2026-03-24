@@ -176,3 +176,58 @@ def test_csx_wyckoff_tensors(tmp_path):
     assert "generated_tensors" in data
     assert "cascade_order" in data
     assert data["start_tokens"].shape[0] == data["generated_tensors"].shape[0]
+
+
+def _read_cif_structures(path):
+    from pymatgen.io.cif import CifParser
+    return CifParser(path).parse_structures(primitive=False)
+
+
+def test_unrelaxed_structures_produces_cif(tmp_path):
+    output_file = tmp_path / "output.cif"
+    generate(_default_args(
+        output_file,
+        generate_mode=GenerationMode.UnrelaxedStructures,
+        initial_n_samples=50,
+    ))
+
+    structures = _read_cif_structures(output_file)
+    assert len(structures) > 0
+    for s in structures:
+        assert len(s) > 0
+
+
+def test_unrelaxed_structures_firm_n_samples(tmp_path):
+    """firm_n_samples limits structures passed to pyxtal, not necessarily CIF entries."""
+    output_file = tmp_path / "output.cif"
+    generate(_default_args(
+        output_file,
+        generate_mode=GenerationMode.UnrelaxedStructures,
+        initial_n_samples=100,
+        firm_n_samples=5,
+    ))
+
+    structures = _read_cif_structures(output_file)
+    assert 1 <= len(structures) <= 5
+
+
+def test_unrelaxed_structures_composition_preserved(tmp_path):
+    """Elements in generated CIF structures match the required CSX element set."""
+    output_file = tmp_path / "output.cif"
+    generate(_default_args(
+        output_file,
+        generate_mode=GenerationMode.UnrelaxedStructures,
+        csx=True,
+        required_elements="Li-O",
+        allowed_elements="fix",
+        initial_n_samples=50,
+    ))
+
+    allowed = {"Li", "O"}
+    structures = _read_cif_structures(output_file)
+    assert len(structures) > 0
+    for s in structures:
+        elements = {el.symbol for el in s.composition.elements}
+        assert "Li" in elements, f"Li missing from {elements}"
+        assert "O" in elements, f"O missing from {elements}"
+        assert elements <= allowed, f"Unexpected elements {elements - allowed}"
