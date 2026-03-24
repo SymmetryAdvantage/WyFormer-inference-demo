@@ -101,13 +101,23 @@ def generate(args):
         from pyxtal import pyxtal
         args.output_file.parent.mkdir(parents=True, exist_ok=True)
         n_written = 0
+        n_failed = 0
         for wp in generated_wp:
-            xtal = pyxtal()
-            xtal.from_random(3, wp["group"], wp["species"], wp["numIons"], sites=wp["sites"])
+            try:
+                xtal = pyxtal()
+                xtal.from_random(3, wp["group"], wp["species"], wp["numIons"], sites=wp["sites"])
+            except RuntimeError as e:
+                print(f"pyxtal failed to generate structure: {e}")
+                n_failed += 1
+                continue
             if xtal.valid:
                 permission = "w" if n_written == 0 else "a+"
                 xtal.to_file(str(args.output_file), permission=permission)
                 n_written += 1
+        if n_failed > len(generated_wp) * 0.1:
+            raise RuntimeError(
+                f"Too many pyxtal failures: {n_failed}/{len(generated_wp)} structures failed to generate."
+            )
         print(f"Wrote {n_written} structures to {args.output_file}")
     else:
         raise ValueError(f"Unsupported generation mode: {args.generate_mode}")
