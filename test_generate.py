@@ -182,7 +182,16 @@ def _read_cif_structures(path):
     import warnings
     from pymatgen.io.cif import CifParser
     with warnings.catch_warnings():
-        warnings.filterwarnings("ignore", message="Skipping relative stoichiometry check")
+        warnings.filterwarnings(
+            "ignore",
+            message=r"Issues encountered while parsing CIF: Skipping relative stoichiometry check",
+            category=UserWarning,
+        )
+        warnings.filterwarnings(
+            "ignore",
+            message=r"Issues encountered while parsing CIF: \d+ fractional coordinates rounded to ideal values",
+            category=UserWarning,
+        )
         return CifParser(path).parse_structures(primitive=False)
 
 
