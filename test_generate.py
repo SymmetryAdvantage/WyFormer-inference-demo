@@ -179,8 +179,11 @@ def test_csx_wyckoff_tensors(tmp_path):
 
 
 def _read_cif_structures(path):
+    import warnings
     from pymatgen.io.cif import CifParser
-    return CifParser(path).parse_structures(primitive=False)
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message="Skipping relative stoichiometry check")
+        return CifParser(path).parse_structures(primitive=False)
 
 
 def test_unrelaxed_structures_produces_cif(tmp_path):
