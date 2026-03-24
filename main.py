@@ -59,8 +59,8 @@ def main():
                 generated_wp = generated_wp[:args.firm_n_samples]
             else:
                 raise ValueError("Not enough valid structures to subsample.")
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        with open(args.output, "wt", encoding="ascii") as f:
+        args.output_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(args.output_file, "wt", encoding="ascii") as f:
             json.dump(generated_wp, f)
     elif args.generate_mode == GenerationMode.WyckoffTensors:
         pass

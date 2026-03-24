@@ -1,2 +1,3 @@
 uv.toml
 .venv/
+generated_structures.json

@@ -6,8 +6,8 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "huggingface-hub>=1.7.2",
-    "wyckofftransformer",
+    "wyckoff-transformer",
 ]
 
 [tool.uv.sources]
-wyckofftransformer = { git = "https://github.com/SymmetryAdvantage/WyckoffTransformer.git" }
+wyckoff-transformer = { git = "https://github.com/SymmetryAdvantage/WyckoffTransformer.git" }
