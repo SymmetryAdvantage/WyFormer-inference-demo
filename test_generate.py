@@ -207,7 +207,10 @@ def test_unrelaxed_structures_firm_n_samples(tmp_path):
         firm_n_samples=5,
     ))
 
-    structures = _read_cif_structures(output_file)
+    import warnings
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", message=".*formula keys.*", category=UserWarning)
+        structures = _read_cif_structures(output_file)
     assert 1 <= len(structures) <= 5
 
 

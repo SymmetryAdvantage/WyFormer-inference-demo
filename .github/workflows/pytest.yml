@@ -26,7 +26,7 @@ jobs:
     - name: Install dependencies
       run: |
         curl -LsSf https://astral.sh/uv/install.sh | sh
-        cp uv.toml.cpu uv.toml
+        cat cpu_torch.toml >> pyproject.toml
         uv sync
     - name: Test with pytest
       run: |
