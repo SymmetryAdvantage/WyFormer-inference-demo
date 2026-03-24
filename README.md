@@ -1,0 +1,1 @@
+[![Pytest](https://github.com/SymmetryAdvantage/WyFormer-inference-demo/actions/workflows/pytest.yml/badge.svg)](https://github.com/SymmetryAdvantage/WyFormer-inference-demo/actions/workflows/pytest.yml)
