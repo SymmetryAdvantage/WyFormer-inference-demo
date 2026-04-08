@@ -2,9 +2,14 @@
 
 # WyFormer Inference Demo
 
-A demonstration and inference tool for [WyckoffTransformer](https://github.com/SymmetryAdvantage/WyckoffTransformer) — a generative AI model for crystal structure generation.
+Minimal demo of using [WyckoffTransformer](https://github.com/SymmetryAdvantage/WyckoffTransformer) as a library
 
-## Features
+## Inference using WyckoffTransformer's built-in CLI
+```bash
+uv run wyformer-generate output.json --hf-model SymmetryAdvantage/WyFormer-Alex-MP20
+```
+
+## mail.py features
 
 - Generate novel crystal structures from a pre-trained model
 - Three output formats: Wyckoff JSON, raw tensors, or unrelaxed CIF structures
