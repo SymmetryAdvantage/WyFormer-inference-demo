@@ -1,4 +1,8 @@
-torch = { index = "pytorch-cpu" }
+[sources]
+torch = [
+  { index = "pytorch-cpu" },
+]
+#torch = { index = "pytorch-cpu" }
 
 [[tool.uv.index]]
 name = "pytorch-cpu"

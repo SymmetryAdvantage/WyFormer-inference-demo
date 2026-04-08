@@ -9,6 +9,3 @@ dependencies = [
     "pytest>=9.0.2",
     "wyckoff-transformer",
 ]
-
-[tool.uv.sources]
-wyckoff-transformer = { git = "https://github.com/SymmetryAdvantage/WyckoffTransformer.git" }

@@ -2,7 +2,7 @@
 
 # WyFormer Inference Demo
 
-A demonstration and inference tool for [WyckoffTransformer](https://github.com/SymmetryAdvantage/WyckoffTransformer) — a generative AI model for crystal structure generation trained on the Materials Project (MP20) dataset.
+A demonstration and inference tool for [WyckoffTransformer](https://github.com/SymmetryAdvantage/WyckoffTransformer) — a generative AI model for crystal structure generation.
 
 ## Features
 
@@ -20,14 +20,10 @@ A demonstration and inference tool for [WyckoffTransformer](https://github.com/S
 ```bash
 # Install uv
 curl -LsSf https://astral.sh/uv/install.sh | sh
-
-# Install project dependencies
-uv sync
 ```
-
-Handle your PyTorch installation separately. By default, uv will get whatever is on PyPI.
-
+Handle your PyTorch installation separately. By default, uv will get whatever is on PyPI. For CPU-only environment, you can `cp uv.toml.cpu uv.toml`.
 ```bash
+# Install project dependencies
 uv sync
 ```
 

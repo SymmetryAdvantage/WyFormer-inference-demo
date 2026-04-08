@@ -1,0 +1,5 @@
+index-strategy = "unsafe-first-match"
+
+[[index]]
+name = "pytorch"
+url = "https://download.pytorch.org/whl/cpu"

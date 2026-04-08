@@ -1,4 +1,4 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# This workflow will install Python dependencies, run tests with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
 name: Pytest
@@ -26,7 +26,7 @@ jobs:
     - name: Install dependencies
       run: |
         curl -LsSf https://astral.sh/uv/install.sh | sh
-        cat cpu_torch.toml >> pyproject.toml
+        cp uv.toml.cpu uv.toml
         uv sync
     - name: Test with pytest
       run: |
