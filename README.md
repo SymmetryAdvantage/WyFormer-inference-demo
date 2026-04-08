@@ -6,7 +6,7 @@ Minimal demo of using [WyckoffTransformer](https://github.com/SymmetryAdvantage/
 
 ## Inference using WyckoffTransformer's built-in CLI
 ```bash
-uv run wyformer-generate output.json --hf-model SymmetryAdvantage/WyFormer-Alex-MP20
+uv run wyformer-generate output.json.gz --hf-model SymmetryAdvantage/WyFormer-Alex-MP20
 ```
 
 ## main.py features
