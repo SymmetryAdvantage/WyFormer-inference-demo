@@ -9,7 +9,7 @@ Minimal demo of using [WyckoffTransformer](https://github.com/SymmetryAdvantage/
 uv run wyformer-generate output.json --hf-model SymmetryAdvantage/WyFormer-Alex-MP20
 ```
 
-## mail.py features
+## main.py features
 
 - Generate novel crystal structures from a pre-trained model
 - Three output formats: Wyckoff JSON, raw tensors, or unrelaxed CIF structures
