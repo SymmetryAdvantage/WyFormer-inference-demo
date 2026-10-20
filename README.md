@@ -1,5 +1,8 @@
 [![Pytest](https://github.com/SymmetryAdvantage/WyFormer-inference-demo/actions/workflows/pytest.yml/badge.svg)](https://github.com/SymmetryAdvantage/WyFormer-inference-demo/actions/workflows/pytest.yml)
 
+# See the main WyFormer repo
+The code base is mature, the main repo has all the documentation
+
 # WyFormer Inference Demo
 
 Minimal demo of using [WyckoffTransformer](https://github.com/SymmetryAdvantage/WyckoffTransformer) as a library
